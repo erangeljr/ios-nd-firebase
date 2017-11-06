@@ -71,6 +71,7 @@ class FCViewController: UIViewController, UINavigationControllerDelegate {
     
     func configureDatabase() {
         // TODO: configure database to sync messages
+        ref = Database.database().reference()
     }
     
     func configureStorage() {
@@ -110,6 +111,7 @@ class FCViewController: UIViewController, UINavigationControllerDelegate {
             messageTextField.delegate = self
             
             // TODO: Set up app to send and receive messages when signed in
+            configureDatabase()
         }
     }
     
@@ -122,6 +124,9 @@ class FCViewController: UIViewController, UINavigationControllerDelegate {
     
     func sendMessage(data: [String:String]) {
         // TODO: create method that pushes message to the firebase database
+        var mdata = data
+        mdata[Constants.MessageFields.name] = displayName
+        ref.child("messages").childByAutoId().setValue(mdata)
     }
     
     func sendPhotoMessage(photoData: Data) {
